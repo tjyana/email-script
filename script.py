@@ -7,10 +7,10 @@ import time
 # Configuration
 SMTP_SERVER = 'smtp.gmail.com'  # e.g., 'smtp.gmail.com' for Gmail
 SMTP_PORT = 587  # Typically 587 for TLS, 465 for SSL
-EMAIL_ADDRESS = 'EMAIL'
-EMAIL_PASSWORD = 'PASSWORD'
+EMAIL_ADDRESS = 'REDACTED'
+EMAIL_PASSWORD = 'REDACTED'
 
-TO_ADDRESS = 'EMAIL'
+TO_ADDRESS = 'REDACTED'
 SUBJECT = '[TESTING] Daily Report from the script'
 
 def get_daily_report():
