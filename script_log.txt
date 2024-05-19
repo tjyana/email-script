@@ -1,8 +1,0 @@
-[22;0t]0;IPython: Projects/email-script[0;31m---------------------------------------------------------------------------[0m
-[0;31mKeyboardInterrupt[0m                         Traceback (most recent call last)
-File [0;32m~/code/Projects/email-script/script.py:50[0m
-[1;32m     48[0m [38;5;28;01mwhile[39;00m [38;5;28;01mTrue[39;00m:
-[1;32m     49[0m     schedule[38;5;241m.[39mrun_pending()
-[0;32m---> 50[0m     [43mtime[49m[38;5;241;43m.[39;49m[43msleep[49m[43m([49m[38;5;241;43m1[39;49m[43m)[49m
-
-[0;31mKeyboardInterrupt[0m: 
