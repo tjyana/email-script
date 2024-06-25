@@ -32,7 +32,7 @@ def get_daily_report():
     model = GPT2LMHeadModel.from_pretrained('gpt2')
 
     # Set the input text
-    input_text = "I understand sleep is very important but I don't know specific ways it is important. Can you tell me one benefit of getting 8 hours of sleep. Please provide a different output each time."
+    input_text = "Sleep is important for good physical and mental health. One specific benefit of sleep is: "
 
     inputs = tokenizer(input_text, return_tensors="pt")
 
