@@ -5,33 +5,29 @@ import schedule
 import time
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
 
-# Configuration
+
+# Configure this section based on your email provider and preferences
+
+# E-mail Configuration
 SMTP_SERVER = 'smtp.gmail.com'  # e.g., 'smtp.gmail.com' for Gmail
 SMTP_PORT = 587  # Typically 587 for TLS, 465 for SSL
-EMAIL_ADDRESS = 'REDACTED'
-EMAIL_PASSWORD = 'REDACTED'
+EMAIL_ADDRESS = 'REDACTED' # the email address the message will be sent from
+EMAIL_PASSWORD = 'REDACTED' # the log-in password for the email address
 
-TO_ADDRESS = 'REDACTED'
-SUBJECT = '[TESTING] Daily Report from the script'
-
-
-
-##### original function
-# def get_daily_report():
-#     # Replace this function with actual report generation logic
-#     return "Here is your daily report."
+# Recipient Information
+TO_ADDRESS = 'REDACTED' # email the message will be sent to
+SUBJECT = '[TESTING] Daily Report from the script' # subject of the email
 
 
-# returns stuff but...params need adjusting.
-# - occasional weirdness in the output
-# - repetition of the same output
+
+# Adjust input_text to get desired message
 def get_daily_report():
 
     # Initialize the tokenizer and model
     tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
     model = GPT2LMHeadModel.from_pretrained('gpt2')
 
-    # Set the input text
+    # Set the input text. Adjust as necessary.
     input_text = "Sleep is important for good physical and mental health. One specific benefit of sleep is: "
 
     inputs = tokenizer(input_text, return_tensors="pt")
@@ -77,11 +73,10 @@ def send_email(subject, body, to_address):
         print(f'Failed to send email: {e}')
 
 
+# Function to send the email with the daily report
 def job():
     report = get_daily_report()  # Generate the report
     send_email(SUBJECT, report, TO_ADDRESS)  # Send the email
-
-job()
 
 # Uncomment below for scheduling
 # ----------------------------------------------
