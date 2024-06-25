@@ -1,5 +1,9 @@
 # email-script
 
+A simple Python script to send a good morning email through Windows `schedule` module.
+GPT2 used as a text generator with prompt engineering to get desired output.
+
+
 Learning project to practice:
 1. Wrapping a pre-trained model
 2. Prompt engineering with a completions-type model to get desired output style
