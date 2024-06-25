@@ -3,6 +3,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import schedule
 import time
+from transformers import GPT2Tokenizer, GPT2LMHeadModel
 
 # Configuration
 SMTP_SERVER = 'smtp.gmail.com'  # e.g., 'smtp.gmail.com' for Gmail
@@ -13,9 +14,47 @@ EMAIL_PASSWORD = 'REDACTED'
 TO_ADDRESS = 'REDACTED'
 SUBJECT = '[TESTING] Daily Report from the script'
 
+
+
+##### original function
+# def get_daily_report():
+#     # Replace this function with actual report generation logic
+#     return "Here is your daily report."
+
+
+# returns stuff but...params need adjusting.
+# - occasional weirdness in the output
+# - repetition of the same output
 def get_daily_report():
-    # Replace this function with actual report generation logic
-    return "Here is your daily report."
+
+    # Initialize the tokenizer and model
+    tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+    model = GPT2LMHeadModel.from_pretrained('gpt2')
+
+    # Set the input text
+    input_text = "I understand sleep is very important but I don't know specific ways it is important. Can you tell me one benefit of getting 8 hours of sleep. Please provide a different output each time."
+
+    inputs = tokenizer(input_text, return_tensors="pt")
+
+    attention_mask = inputs['attention_mask']
+
+    # Generate text with additional parameters to reduce repetition
+    output = model.generate(
+        inputs['input_ids'],
+        attention_mask=attention_mask,
+        pad_token_id=tokenizer.eos_token_id,
+        max_length=200,
+        repetition_penalty=2.0,  # Penalty for repeating the same sequence
+        top_k=50,  # Limits the sampling pool to the top k tokens
+        top_p=0.5,  # Limits the sampling pool to the top p cumulative probability
+        temperature=0.7,  # Controls randomness in the output
+        num_return_sequences=1,  # Number of sequences to generate
+        do_sample=True
+    )
+
+    generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
+
+    return generated_text
 
 def send_email(subject, body, to_address):
     # Create the email message
@@ -37,14 +76,20 @@ def send_email(subject, body, to_address):
     except Exception as e:
         print(f'Failed to send email: {e}')
 
+
 def job():
     report = get_daily_report()  # Generate the report
     send_email(SUBJECT, report, TO_ADDRESS)  # Send the email
 
-# Schedule the job every day at a specific time (e.g., 8:00 AM)
-schedule.every().day.at("10:24").do(job)
+job()
 
-# Keep the script running
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+# Uncomment below for scheduling
+# ----------------------------------------------
+# # Schedule the job every day at a specific time (e.g., 8:00 AM)
+# schedule.every().day.at("10:24").do(job)
+
+# # Keep the script running
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)
+# ----------------------------------------------
