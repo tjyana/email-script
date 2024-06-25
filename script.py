@@ -7,7 +7,7 @@ from transformers import GPT2Tokenizer, GPT2LMHeadModel
 
 
 # Configure this section based on your email provider and preferences
-
+#  ---------------------------------------------------------
 # E-mail Configuration
 SMTP_SERVER = 'smtp.gmail.com'  # e.g., 'smtp.gmail.com' for Gmail
 SMTP_PORT = 587  # Typically 587 for TLS, 465 for SSL
@@ -17,9 +17,12 @@ EMAIL_PASSWORD = 'REDACTED' # the log-in password for the email address
 # Recipient Information
 TO_ADDRESS = 'REDACTED' # email the message will be sent to
 SUBJECT = '[TESTING] Daily Report from the script' # subject of the email
+#  ---------------------------------------------------------
 
 
 
+# Text generation function
+#  ---------------------------------------------------------
 # Adjust input_text to get desired message
 def get_daily_report():
 
@@ -51,7 +54,12 @@ def get_daily_report():
     generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
 
     return generated_text
+#  ---------------------------------------------------------
 
+
+
+# Send email function
+#  ---------------------------------------------------------
 def send_email(subject, body, to_address):
     # Create the email message
     msg = MIMEMultipart()
@@ -71,20 +79,30 @@ def send_email(subject, body, to_address):
         print('Email sent successfully')
     except Exception as e:
         print(f'Failed to send email: {e}')
+#  ---------------------------------------------------------
 
 
-# Function to send the email with the daily report
+
+# Orchestrator Function
+#  ---------------------------------------------------------
 def job():
     report = get_daily_report()  # Generate the report
     send_email(SUBJECT, report, TO_ADDRESS)  # Send the email
+#  ---------------------------------------------------------
 
-# Uncomment below for scheduling
-# ----------------------------------------------
-# # Schedule the job every day at a specific time (e.g., 8:00 AM)
-# schedule.every().day.at("10:24").do(job)
 
-# # Keep the script running
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
-# ----------------------------------------------
+
+
+# Schedule the job every day at a specific time (e.g., 6:00 AM)
+#  ---------------------------------------------------------
+schedule.every().day.at("6:00").do(job)
+#  ---------------------------------------------------------
+
+
+
+# Keep the script running
+#  ---------------------------------------------------------
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+#  ---------------------------------------------------------
